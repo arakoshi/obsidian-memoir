@@ -1,7 +1,7 @@
 name: General task
 description: Create a general task or enhancement
-title: "[Task] "
-labels: ["enhancement"]
+title: '[Task] '
+labels: ['enhancement']
 body:
   - type: textarea
     id: summary

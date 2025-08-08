@@ -34,6 +34,7 @@ Outputs `main.js` in the repo root.
 - Custom span: `{{ テキスト : #気分 #外出(note=朝) }}`
 
 Notes:
+
 - Only inner tagging is supported. Post-span/link outer tags are not parsed.
 - Link spans `[[…]]` do not carry tags.
 
@@ -42,6 +43,7 @@ Notes:
 Tag a version `vX.Y.Z` on `main`.
 
 GitHub Actions will:
+
 - Install deps and build `main.js`
 - Verify the tag matches `manifest.json` `version`
 - Attach `main.js`, `manifest.json`, and `styles.css` to the GitHub Release

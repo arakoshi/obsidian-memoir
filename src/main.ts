@@ -5,7 +5,7 @@ import {
   Plugin,
   PluginSettingTab,
   Setting,
-  TFile
+  TFile,
 } from 'obsidian';
 
 /**
@@ -39,7 +39,7 @@ interface MemoirPluginSettings {
 
 const DEFAULT_SETTINGS: MemoirPluginSettings = {
   enableInner: true,
-  showBadgesByDefault: false
+  showBadgesByDefault: false,
 };
 
 /**
@@ -77,7 +77,7 @@ function parseTagSequence(seq: string): { tags: string[]; attrs: Record<string, 
  * Main plugin class implementing inline tagging for emphasised and custom spans.
  */
 export default class MemoirTaggingPlugin extends Plugin {
-  settings: MemoirPluginSettings;
+  settings!: MemoirPluginSettings;
   /**
    * In memory index of all spans tagged across the vault. The index is built
    * opportunistically as pages are rendered. In a future version this could be
@@ -92,9 +92,11 @@ export default class MemoirTaggingPlugin extends Plugin {
 
     // Register Markdown post processor to handle inline tagging after the note
     // has been converted into HTML. This runs in reading view only.
-    this.registerMarkdownPostProcessor((element: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-      this.processRenderedMarkdown(element, ctx);
-    });
+    this.registerMarkdownPostProcessor(
+      (element: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+        this.processRenderedMarkdown(element, ctx);
+      }
+    );
 
     // Command to export the current span index to a JSON file in the vault.
     this.addCommand({
@@ -114,7 +116,7 @@ export default class MemoirTaggingPlugin extends Plugin {
           console.error('Failed to export Memoir index', e);
           new Notice('Failed to export Memoir index. See console for details.');
         }
-      }
+      },
     });
 
     // Command to log the current span index to the developer console for debugging.
@@ -124,7 +126,7 @@ export default class MemoirTaggingPlugin extends Plugin {
       callback: () => {
         console.log('Memoir Tag Index:', this.spanIndex);
         new Notice(`Logged ${this.spanIndex.length} spans to console.`);
-      }
+      },
     });
 
     // Command to manually rebuild the span index by reading all files.
@@ -134,7 +136,7 @@ export default class MemoirTaggingPlugin extends Plugin {
       callback: async () => {
         await this.rebuildIndex();
         new Notice(`Rebuilt Memoir index. Found ${this.spanIndex.length} spans.`);
-      }
+      },
     });
 
     // Add a settings tab to allow users to configure behaviour.
@@ -154,7 +156,13 @@ export default class MemoirTaggingPlugin extends Plugin {
   private processRenderedMarkdown(element: HTMLElement, ctx: MarkdownPostProcessorContext) {
     const currentFile = ctx.sourcePath;
     // Helper to record a span into the index. Using closure to capture file.
-    const recordSpan = (kind: 'mark' | 'custom', targetEl: HTMLElement, text: string, tags: string[], attrs: Record<string, string>) => {
+    const recordSpan = (
+      kind: 'mark' | 'custom',
+      targetEl: HTMLElement,
+      text: string,
+      tags: string[],
+      attrs: Record<string, string>
+    ) => {
       const sectionInfo = ctx.getSectionInfo(targetEl);
       const line = sectionInfo ? sectionInfo.lineStart : 0;
       const rec: SpanRecord = {
@@ -165,7 +173,7 @@ export default class MemoirTaggingPlugin extends Plugin {
         text,
         tags,
         attrs,
-        kind
+        kind,
       };
       this.spanIndex.push(rec);
     };
@@ -182,7 +190,9 @@ export default class MemoirTaggingPlugin extends Plugin {
       if (this.settings.enableInner) {
         const innerText = mark.textContent || '';
         // Match a colon followed by one or more space-separated #tags at end of string.
-        const innerMatch = innerText.match(/(:\s*#[^\s:()]+(?:\([^)]*\))?(?:\s+#[^\s:()]+(?:\([^)]*\))?)*)\s*$/);
+        const innerMatch = innerText.match(
+          /(:\s*#[^\s:()]+(?:\([^)]*\))?(?:\s+#[^\s:()]+(?:\([^)]*\))?)*)\s*$/
+        );
         if (innerMatch) {
           const tagSeq = innerMatch[0];
           cleanedText = innerText.substring(0, innerText.length - tagSeq.length).trimEnd();
@@ -250,7 +260,8 @@ export default class MemoirTaggingPlugin extends Plugin {
       if (!parent) continue;
       const tagName = parent.tagName.toLowerCase();
       // Skip within code, pre, existing marks and links.
-      if (tagName === 'code' || tagName === 'pre' || tagName === 'mark' || tagName === 'a') continue;
+      if (tagName === 'code' || tagName === 'pre' || tagName === 'mark' || tagName === 'a')
+        continue;
       textNodes.push(n as Text);
     }
 
@@ -270,7 +281,9 @@ export default class MemoirTaggingPlugin extends Plugin {
 
         const inner = match[1];
         // Extract tag sequence from the end of inner content (inner tagging only).
-        const innerMatch = inner.match(/(:\s*#[^\s:()]+(?:\([^)]*\))?(?:\s+#[^\s:()]+(?:\([^)]*\))?)*)\s*$/);
+        const innerMatch = inner.match(
+          /(:\s*#[^\s:()]+(?:\([^)]*\))?(?:\s+#[^\s:()]+(?:\([^)]*\))?)*)\s*$/
+        );
         let contentText = inner.trim();
         let tags: string[] = [];
         let attrs: Record<string, string> = {};
@@ -363,7 +376,9 @@ export default class MemoirTaggingPlugin extends Plugin {
         let attrs: Record<string, string> = {};
         // Check for inner tags at the end of the span body
         // Allow optional whitespace after the colon before the hash when matching inner tags.
-        const innerMatch = spanBody.match(/(:\s*#[^\s:()]+(?:\([^)]*\))?(?:\s+#[^\s:()]+(?:\([^)]*\))?)*)\s*$/);
+        const innerMatch = spanBody.match(
+          /(:\s*#[^\s:()]+(?:\([^)]*\))?(?:\s+#[^\s:()]+(?:\([^)]*\))?)*)\s*$/
+        );
         if (innerMatch) {
           tagSeq = innerMatch[0];
           text = spanBody.substring(0, spanBody.length - tagSeq.length).trimEnd();
@@ -380,7 +395,7 @@ export default class MemoirTaggingPlugin extends Plugin {
             text: text.trim(),
             tags,
             attrs,
-            kind: 'mark'
+            kind: 'mark',
           };
           this.spanIndex.push(rec);
         }
@@ -397,7 +412,9 @@ export default class MemoirTaggingPlugin extends Plugin {
         const ce = line.indexOf('}}', cs + 2);
         if (ce === -1) break;
         const inner = line.substring(cs + 2, ce).trim();
-        const innerMatch = inner.match(/(:\s*#[^\s:()]+(?:\([^)]*\))?(?:\s+#[^\s:()]+(?:\([^)]*\))?)*)\s*$/);
+        const innerMatch = inner.match(
+          /(:\s*#[^\s:()]+(?:\([^)]*\))?(?:\s+#[^\s:()]+(?:\([^)]*\))?)*)\s*$/
+        );
         let textOnly = inner;
         let tags: string[] = [];
         let attrs: Record<string, string> = {};
@@ -417,7 +434,7 @@ export default class MemoirTaggingPlugin extends Plugin {
             text: textOnly.trim(),
             tags,
             attrs,
-            kind: 'custom'
+            kind: 'custom',
           };
           this.spanIndex.push(rec);
         }
@@ -455,7 +472,9 @@ class MemoirSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName('Show badges by default')
-      .setDesc('If enabled, tag badges are always visible. When disabled, badges remain hidden until you click on the tagged span in reading mode.')
+      .setDesc(
+        'If enabled, tag badges are always visible. When disabled, badges remain hidden until you click on the tagged span in reading mode.'
+      )
       .addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.showBadgesByDefault);
         toggle.onChange(async (value) => {
