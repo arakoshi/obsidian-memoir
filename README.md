@@ -22,7 +22,7 @@ Inline tagging for emphasised (== … ==) and custom ({{ … }}) spans in Obsidi
 ## Build (Local)
 
 ```
-npm ci
+npm install
 npm run build
 ```
 
@@ -49,4 +49,3 @@ GitHub Actions will:
 ## License
 
 MIT
-

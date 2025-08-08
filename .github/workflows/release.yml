@@ -18,7 +18,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build plugin
         run: npm run build
@@ -40,4 +40,3 @@ jobs:
             styles.css
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
