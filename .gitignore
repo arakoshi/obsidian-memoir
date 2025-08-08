@@ -5,6 +5,7 @@
 node_modules/
 
 # Build artifacts
+main.js
 *.map
 *.log
 
