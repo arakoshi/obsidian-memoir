@@ -31,11 +31,14 @@ Outputs `main.js` in the repo root.
 ## Usage Syntax
 
 - Mark inner tags: `== テキスト: #気分 #外出 ==`
+- Mark inner tags (no extra spaces): `==テキスト: #気分 #外出==`
 - Custom span: `{{ テキスト : #気分 #外出(note=朝) }}`
 
 Notes:
 
+- Spaces around `==` and before/after the colon are optional. Both `==テキスト: #t1 #t2==` and `== テキスト: #t1 #t2 ==` work.
 - Only inner tagging is supported. Post-span/link outer tags are not parsed.
+- Colon-chained tags (`: #t1: #t2`) are not supported; use spaces between tags: `: #t1 #t2`.
 - Link spans `[[…]]` do not carry tags.
 
 ## Release Process

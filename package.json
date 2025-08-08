@@ -7,7 +7,10 @@
     "build": "esbuild src/main.ts --bundle --format=cjs --platform=node --external:obsidian --target=es2020 --outfile=main.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.js --max-warnings=0",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "prepare": "lefthook install"
   },
   "keywords": [
     "obsidian",
@@ -23,7 +26,12 @@
   "devDependencies": {
     "typescript": "^5.0.0",
     "esbuild": "^0.19.0",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "eslint-config-prettier": "^9.1.0",
+    "lefthook": "^1.6.10"
   },
   "repository": {
     "type": "git",
