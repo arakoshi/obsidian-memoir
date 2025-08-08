@@ -4,7 +4,10 @@
   "description": "Inline tagging plugin for emphasised (==) and custom ({{…}}) spans in Obsidian, used by Memoir.",
   "main": "main.js",
   "scripts": {
-    "build": "esbuild src/main.ts --bundle --format=cjs --platform=node --external:obsidian --target=es2020 --outfile=main.js"
+    "build": "esbuild src/main.ts --bundle --format=cjs --platform=node --external:obsidian --target=es2020 --outfile=main.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "obsidian",
@@ -19,6 +22,7 @@
   },
   "devDependencies": {
     "typescript": "^5.0.0",
-    "esbuild": "^0.19.0"
+    "esbuild": "^0.19.0",
+    "prettier": "^3.3.3"
   }
 }
