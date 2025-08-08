@@ -15,7 +15,7 @@
     "memoir",
     "tagging"
   ],
-  "author": "waon",
+  "author": "sacher-arakoshi",
   "license": "MIT",
   "dependencies": {
     "obsidian": "^1.0.0"
@@ -24,5 +24,13 @@
     "typescript": "^5.0.0",
     "esbuild": "^0.19.0",
     "prettier": "^3.3.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/arakoshi/obsidian-memoir.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arakoshi/obsidian-memoir/issues"
+  },
+  "homepage": "https://github.com/arakoshi/obsidian-memoir#readme"
 }

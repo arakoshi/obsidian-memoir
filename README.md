@@ -51,3 +51,9 @@ GitHub Actions will:
 ## License
 
 MIT
+
+## Contributors
+
+- @sacher-arakoshi
+- @waonme
+- @gaon-arakoshi

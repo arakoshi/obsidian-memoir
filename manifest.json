@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "minAppVersion": "0.15.0",
   "description": "Adds inline tagging for emphasised (==) and custom ({{…}}) spans in Obsidian and builds an in‑memory index for Memoir integration.",
-  "author": "waon",
-  "authorUrl": "",
+  "author": "sacher-arakoshi",
+  "authorUrl": "https://github.com/sacher-arakoshi",
   "isDesktopOnly": false,
   "main": "main.js",
   "css": "styles.css"
